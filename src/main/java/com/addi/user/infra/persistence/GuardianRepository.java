@@ -5,11 +5,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.addi.user.doamin.User;
+import com.addi.user.doamin.Guardian;
 
 @Transactional
-public interface UserRepository extends JpaRepository<User, Long> {
-	Optional<User> findByMacAddress(String macAddress);
+public interface GuardianRepository extends JpaRepository<Guardian, Long> {
 
-	Optional<User> findByInvitationCode(String invitationCode);
+	Optional<Guardian> findByMacAddress(String macAddress);
 }
