@@ -1,25 +1,23 @@
 package com.addi.stt.appication;
 
-import com.addi.global.exception.BusinessException;
-import com.addi.stt.appication.dto.VoiceResponse;
-import com.addi.stt.exception.VoiceError;
-import com.addi.user.application.dto.UserLoginResponse;
-import com.addi.user.doamin.User;
-import com.addi.user.exception.UserError;
-import com.addi.user.infra.persistence.UserRepository;
-import com.google.cloud.speech.v1.*;
-import com.google.protobuf.ByteString;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import com.addi.global.exception.BusinessException;
+import com.addi.stt.appication.dto.VoiceResponse;
+import com.addi.stt.exception.VoiceError;
+import com.google.cloud.speech.v1.RecognitionAudio;
+import com.google.cloud.speech.v1.RecognitionConfig;
+import com.google.cloud.speech.v1.RecognizeResponse;
+import com.google.cloud.speech.v1.SpeechClient;
+import com.google.cloud.speech.v1.SpeechRecognitionResult;
+import com.google.protobuf.ByteString;
 
-import static java.util.UUID.randomUUID;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -40,15 +38,15 @@ public class VoiceService {
 				// 오디오 객체 생성
 				ByteString audioData = ByteString.copyFrom(audioBytes);
 				RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder()
-						.setContent(audioData)
-						.build();
+					.setContent(audioData)
+					.build();
 
 				// 설정 객체 생성
 				RecognitionConfig recognitionConfig = RecognitionConfig.newBuilder()
-						.setEncoding(RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED)
-						.setSampleRateHertz(44100)
-						.setLanguageCode("ko-KR") // 한국어로 설정
-						.build();
+					.setEncoding(RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED)
+					.setSampleRateHertz(44100)
+					.setLanguageCode("ko-KR") // 한국어로 설정
+					.build();
 
 				// 오디오-텍스트 변환 수행
 				RecognizeResponse response = speechClient.recognize(recognitionConfig, recognitionAudio);
