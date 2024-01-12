@@ -1,0 +1,3 @@
+[submodule "ADDI-config"]
+	path = ADDI-config
+	url = git@github.com:GDSC-Team-J/ADDI-config.git
