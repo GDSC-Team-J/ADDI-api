@@ -2,8 +2,6 @@ package com.addi.stt.presentation;
 
 import com.addi.stt.appication.VoiceService;
 import com.addi.stt.appication.dto.VoiceResponse;
-import com.addi.user.application.UserLoginService;
-import com.addi.user.application.dto.UserLoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;

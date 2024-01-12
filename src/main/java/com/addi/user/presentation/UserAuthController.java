@@ -2,11 +2,7 @@ package com.addi.user.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.addi.user.application.AuthService;
 import com.addi.user.application.dto.LoginResponse;
@@ -40,7 +36,7 @@ public class UserAuthController {
 	@PostMapping("/api/signup/guardian")
 	public ResponseEntity<Guardian> signUpGuardian(
 		@RequestHeader String macAddress,
-		@RequestBody String invitationCode
+		@RequestParam String invitationCode
 	) {
 		log.warn("{}", invitationCode);
 		Guardian guardian = userAuthService.signUpToGuardian(macAddress, invitationCode);
