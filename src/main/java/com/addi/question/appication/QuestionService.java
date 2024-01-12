@@ -7,6 +7,7 @@ import com.addi.stt.exception.VoiceError;
 import com.google.cloud.speech.v1.*;
 import com.google.protobuf.ByteString;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +21,9 @@ import java.util.List;
 @Transactional
 public class QuestionService {
 
-	Questions questions;
-
 	public QuestionResponse getQuestionService(){
-
-		List<Questions> randomQuestions = questions.getRandomQuestions(5);
-
+		List<String> randomQuestions = Questions.getRandomQuestions(5);
 		QuestionResponse question  = new QuestionResponse(randomQuestions);
-
 		return question;
 	}
 }

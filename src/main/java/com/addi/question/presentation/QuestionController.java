@@ -24,6 +24,7 @@ public class QuestionController {
 	@GetMapping("/api/getQuestion")
 	public ResponseEntity<QuestionResponse> getQuestionResponse() {
 		QuestionResponse questionResponse = questionService.getQuestionService();
+		System.out.println(questionResponse);
 
 		return ResponseEntity.ok(questionResponse);
 

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Getter
 public enum Questions {
@@ -141,7 +142,7 @@ public enum Questions {
 
     private static final Random random = new Random();
 
-    public List<Questions> getRandomQuestions(int count) {
+    public static List<String> getRandomQuestions(int count) {
         if (count <= 0 || count > values().length) {
             throw new IllegalArgumentException("Invalid count for random questions");
         }
@@ -149,6 +150,13 @@ public enum Questions {
         List<Questions> allQuestions = Arrays.asList(values());
         Collections.shuffle(allQuestions, random);
 
-        return allQuestions.subList(0, count);
+        return allQuestions.subList(0, count).stream()
+                .map(Questions::getQuestion)
+                .collect(Collectors.toList());
     }
+
+    public String getQuestion() {
+        return this.question;
+    }
+
 }
