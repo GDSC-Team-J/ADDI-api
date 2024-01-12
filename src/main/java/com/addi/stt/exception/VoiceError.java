@@ -10,7 +10,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Getter
 @RequiredArgsConstructor
 public enum VoiceError implements ErrorCode {
-	EMPTY_VOICE("음성파일이 없습니다.", NOT_FOUND, "V_001");
+	EMPTY_FILE("파일이 없습니다.", NOT_FOUND, "V_001"),
+	EMPTY_VOICE("녹음된 음성이 없습니다.", NOT_FOUND,"V_002"),
+	NOT_TRANSLATOR("텍스트 변환 중 문제가 발생하였습니다.", NOT_FOUND,"V_003");
 
 	private final String message;
 	private final HttpStatus status;
