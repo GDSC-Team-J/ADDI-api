@@ -16,9 +16,7 @@ import com.addi.user.infra.persistence.GuardianRepository;
 import com.addi.user.infra.persistence.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -46,7 +44,7 @@ public class AuthService {
 		return new UserSignUpResponse(invitationCode);
 	}
 
-	public Guardian signUpToGuardian(
+	public void signUpToGuardian(
 		String macAddress,
 		String invitationCode
 	) {
@@ -54,7 +52,7 @@ public class AuthService {
 		User user = userRepository.findByInvitationCode(invitationCode)
 			.orElseThrow(() -> BusinessException.of(UserError.INVITATION_CODE_NOT_FOUND));
 		Guardian guardian = Guardian.createGuardian(macAddress, user);
-		return guardianRepository.save(guardian);
+		guardianRepository.save(guardian);
 	}
 
 	private String generateInvitationCode() {
