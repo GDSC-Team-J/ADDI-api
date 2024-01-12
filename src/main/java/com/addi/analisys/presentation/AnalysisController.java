@@ -2,7 +2,9 @@ package com.addi.analisys.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +32,7 @@ public class AnalysisController {
 		@RequestParam double value4,
 		@RequestParam String key5,
 		@RequestParam double value5,
-		@RequestParam String macAddress
+		@RequestHeader String macAddress
 	) {
 		Analysis analysis = analysisService.saveAnalysis(
 			key1, value1,
@@ -40,6 +42,12 @@ public class AnalysisController {
 			key5, value5,
 			macAddress
 		);
+		return ResponseEntity.ok(analysis);
+	}
+
+	@GetMapping("/api/findAnalysis")
+	public ResponseEntity<Analysis> findAnalysis(@RequestHeader String macAddress) {
+		Analysis analysis = analysisService.findAnalysisByGuardianMacAddress(macAddress);
 		return ResponseEntity.ok(analysis);
 	}
 }
