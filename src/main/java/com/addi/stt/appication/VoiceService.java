@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.addi.global.exception.BusinessException;
-import com.addi.stt.appication.dto.VoiceResponse;
 import com.addi.stt.exception.VoiceError;
 import com.google.cloud.speech.v1.RecognitionAudio;
 import com.google.cloud.speech.v1.RecognitionConfig;
@@ -24,7 +23,10 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class VoiceService {
 
-	public VoiceResponse convert(String macAddress, List<MultipartFile> files) {
+	public List<String> convert(
+		String macAddress,
+		List<MultipartFile> files
+	) {
 		if (files.isEmpty()) {
 			BusinessException.of(VoiceError.EMPTY_VOICE);
 		}
@@ -63,7 +65,6 @@ public class VoiceService {
 				throw new RuntimeException("Error processing audio file: " + file.getOriginalFilename(), e);
 			}
 		}
-		return new VoiceResponse(transcripts);
+		return transcripts;
 	}
-
 }

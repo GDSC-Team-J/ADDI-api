@@ -11,21 +11,28 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.addi.stt.appication.VoiceService;
-import com.addi.stt.appication.dto.VoiceResponse;
+import com.addi.translation.application.PapagoService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UploadVoiceController {
 
+	private final PapagoService papagoService;
 	private final VoiceService voiceService;
 
 	@PostMapping("/api/uploadVoice")
-	public ResponseEntity<VoiceResponse> getUserRole(@RequestHeader String macAddress,
-		@RequestParam("files") List<MultipartFile> files) {
-		VoiceResponse response = voiceService.convert(macAddress, files);
-		return ResponseEntity.ok(response);
+	public ResponseEntity<Void> toEmotionalAnalysisResponse(
+		@RequestHeader String macAddress,
+		@RequestParam("files") List<MultipartFile> files
+	) {
+		List<String> convertedToTexts = voiceService.convert(macAddress, files);
+		String output = papagoService.translateEngToKor(convertedToTexts);
+		log.warn("{}", output);
+		return ResponseEntity.ok().build();
 	}
 }
