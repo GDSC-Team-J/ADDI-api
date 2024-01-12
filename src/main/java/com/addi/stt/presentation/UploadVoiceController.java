@@ -26,13 +26,13 @@ public class UploadVoiceController {
 	private final VoiceService voiceService;
 
 	@PostMapping("/api/uploadVoice")
-	public ResponseEntity<Void> toEmotionalAnalysisResponse(
+	public ResponseEntity<String> toEmotionalAnalysisResponse(
 		@RequestHeader String macAddress,
 		@RequestParam("files") List<MultipartFile> files
 	) {
 		List<String> convertedToTexts = voiceService.convert(macAddress, files);
 		String output = papagoService.translateEngToKor(convertedToTexts);
-		log.warn("{}", output);
-		return ResponseEntity.ok().build();
+
+		return ResponseEntity.ok(output);
 	}
 }
