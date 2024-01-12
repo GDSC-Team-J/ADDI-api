@@ -3,11 +3,11 @@ package com.addi.user.presentation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.addi.user.application.UserSignUpService;
-import com.addi.user.application.dto.UserSignUpStatusResponse;
+import com.addi.user.application.UserLoginService;
+import com.addi.user.application.dto.UserLoginResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserFindController {
 
-	private final UserSignUpService userSignUpService;
+	private final UserLoginService userSignUpService;
 
-	@GetMapping("/api/status")
-	public ResponseEntity<UserSignUpStatusResponse> existUser(@RequestBody String macAddress) {
-		UserSignUpStatusResponse response = userSignUpService.toSignUpStatusResponse(macAddress);
+	@GetMapping("/api/login")
+	public ResponseEntity<UserLoginResponse> getUserRole(@RequestHeader String macAddress) {
+		UserLoginResponse response = userSignUpService.login(macAddress);
 		return ResponseEntity.ok(response);
 	}
 }

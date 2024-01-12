@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    group:
+      deploy:
+        - deploy
+    default: deploy

@@ -1,7 +1,7 @@
 ### CUSTOM ###
 .vscode
 .DS_Store
-application*
+application-deploy.yml
 
 ### DEFAULT ###
 HELP.md
