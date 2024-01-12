@@ -1,5 +1,6 @@
 package com.addi.user.doamin;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -9,37 +10,42 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "t_guardian")
 @Getter
-@Table(name = "t_user")
 @NoArgsConstructor(access = PROTECTED)
-public class User extends BaseEntity {
+public class Guardian extends BaseEntity {
 
 	@Id
-	@Column(name = "user_id")
+	@Column(name = "guardian_id")
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
 	private String macAddress;
 
-	private String invitationCode;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
-	private User(
+	private Guardian(
 		String macAddress,
-		String invitationCode
+		User user
 	) {
 		this.macAddress = macAddress;
-		this.invitationCode = invitationCode;
+		this.user = user;
 	}
 
-	public static User createUser(
+	public static Guardian createGuardian(
 		String macAddress,
-		String invitationCode
+		User user
 	) {
-		return new User(macAddress, invitationCode);
+		return new Guardian(macAddress, user);
 	}
 }
+
