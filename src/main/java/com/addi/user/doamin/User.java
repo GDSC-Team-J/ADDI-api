@@ -11,11 +11,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 public class User extends BaseEntity {
 
@@ -29,4 +31,14 @@ public class User extends BaseEntity {
 	private String macAddress;
 
 	private String invitationCode;
+
+	public User(
+		UserRole userRole,
+		String macAddress,
+		String invitationCode
+	) {
+		this.userRole = userRole;
+		this.macAddress = macAddress;
+		this.invitationCode = invitationCode;
+	}
 }

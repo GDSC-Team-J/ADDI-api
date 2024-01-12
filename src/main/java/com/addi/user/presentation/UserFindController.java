@@ -8,19 +8,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.addi.user.application.UserLoginService;
 import com.addi.user.application.dto.UserLoginResponse;
+import com.addi.user.application.dto.UserSignUpResponse;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class UserFindController {
 
-	private final UserLoginService userSignUpService;
+	private final UserLoginService userLoginService;
 
 	@GetMapping("/api/login")
-	public ResponseEntity<UserLoginResponse> getUserRole(@RequestHeader String macAddress) {
-		UserLoginResponse response = userSignUpService.login(macAddress);
+	public ResponseEntity<UserLoginResponse> login(@RequestHeader String macAddress) {
+		UserLoginResponse response = userLoginService.login(macAddress);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/api/signup/user")
+	public ResponseEntity<UserSignUpResponse> signUp(@RequestHeader String macAddress) {
+		UserSignUpResponse response = userLoginService.signUpToUser(macAddress);
 		return ResponseEntity.ok(response);
 	}
 }
