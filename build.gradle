@@ -19,6 +19,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -46,6 +47,10 @@ dependencies {
     implementation("com.google.cloud:google-cloud-speech")
     implementation("com.google.protobuf:protobuf-java:3.21.12")
     implementation("com.fasterxml.jackson.core:jackson-databind")
+
+    //convertMP3
+    implementation 'org.bytedeco:javacv-platform:1.5.5'
+    implementation 'org.bytedeco:ffmpeg-platform:4.3.2-1.5.5'
 }
 
 tasks.named('test') {

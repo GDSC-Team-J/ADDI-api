@@ -11,11 +11,15 @@ import com.addi.user.infra.persistence.UserRepository;
 import com.google.cloud.speech.v1.*;
 import com.google.protobuf.ByteString;
 import lombok.RequiredArgsConstructor;
+import org.bytedeco.ffmpeg.global.avcodec;
+import org.bytedeco.javacv.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -34,9 +38,13 @@ public class VoiceService {
 
 		List<String> transcripts = new ArrayList<>();
 		for (MultipartFile file : files) {
+
 			try (SpeechClient speechClient = SpeechClient.create()) {
+
+				File converted = convertM4aToMp3(file);  // 변환 함수 호출
+
 				// 오디오 파일을 byte array로 decode
-				byte[] audioBytes = file.getBytes();
+				byte[] audioBytes = Files.readAllBytes(converted.toPath());  // 변환된 파일 읽기
 
 				// 오디오 객체 생성
 				ByteString audioData = ByteString.copyFrom(audioBytes);
@@ -70,4 +78,27 @@ public class VoiceService {
 		return transcripts;
 	}
 
+
+	private File convertM4aToMp3(MultipartFile multipartFile) throws IOException {
+		File targetFile = new File("converted_" + multipartFile.getOriginalFilename() + ".mp3");
+		FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(multipartFile.getInputStream());
+		try {
+			grabber.start();
+			FrameRecorder recorder = new FFmpegFrameRecorder(targetFile, 1);
+			recorder.setAudioCodec(avcodec.AV_CODEC_ID_MP3);
+			recorder.setSampleRate(grabber.getSampleRate());
+			recorder.start();
+
+			Frame frame;
+			while ((frame = grabber.grabFrame()) != null) {
+				recorder.record(frame);
+			}
+
+			recorder.stop();
+			grabber.stop();
+		} catch (FrameGrabber.Exception | FrameRecorder.Exception e) {
+			throw new RuntimeException("Error converting audio file: " + multipartFile.getOriginalFilename(), e);
+		}
+		return targetFile;
+	}
 }

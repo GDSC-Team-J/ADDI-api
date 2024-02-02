@@ -31,6 +31,7 @@ public class UploadVoiceController {
 		@RequestParam("files") List<MultipartFile> files
 	) {
 		List<String> convertedToTexts = voiceService.convert(macAddress, files);
+		System.out.println(convertedToTexts);
 		String output = papagoService.translateEngToKor(convertedToTexts);
 
 		return ResponseEntity.ok(output);
